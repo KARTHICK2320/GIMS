@@ -1,0 +1,40 @@
+# Node.js
+node_modules/
+dist/
+dist-ssr/
+*.local
+.npm
+
+# Python virtual environment
+venv/
+.venv/
+ENV/
+env/
+pyvenv.cfg
+pip-selfcheck.json
+
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Databases
+*.db
+*.sqlite3
+
+# Local environment variables
+.env
+.env.local
+
+# VS Code settings
+.vscode/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# AI Agent metadata/chats
+.refact/
+

@@ -1,0 +1,255 @@
+{
+  "info": {
+    "name": "GIMS API (Python + Flask)",
+    "description": "Postman Collection v2.1.0 for the Grocery Inventory Management System (GIMS) backend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User (Success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Manoj M\",\n  \"email\": \"manoj.admin@gims.com\",\n  \"password\": \"adminpass123\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/register" },
+            "description": "Expected status: 201 Created\nResponse shape: { success: true, message: string, data: { token: string, user: { id: int, name: string, email: string, role: string } } }"
+          }
+        },
+        {
+          "name": "Register User (Invalid Email - 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Manoj M\",\n  \"email\": \"bad-email-format\",\n  \"password\": \"pass123\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/register" },
+            "description": "Expected status: 400 Bad Request\nResponse shape: { success: false, message: \"Validation failed.\", errors: [ { field: \"email\", message: \"Invalid email address format.\" } ] }"
+          }
+        },
+        {
+          "name": "Login (Success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manoj.admin@gims.com\",\n  \"password\": \"adminpass123\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/login" },
+            "description": "Expected status: 200 OK\nResponse shape: { success: true, message: string, data: { token: string, user: { id: int, name: string, email: string, role: string } } }"
+          }
+        },
+        {
+          "name": "Login (Invalid Credentials - 401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manoj.admin@gims.com\",\n  \"password\": \"wrongpass\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/login" },
+            "description": "Expected status: 401 Unauthorized\nResponse shape: { success: false, message: \"Invalid email or password.\" }"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "List Products (Public)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/products?page=1&limit=10&search=&department=&status=",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "" },
+                { "key": "department", "value": "" },
+                { "key": "status", "value": "" }
+              ]
+            },
+            "description": "Expected status: 200 OK\nResponse shape: { success: true, data: [ products ], pagination: { totalItems: int, currentPage: int, totalPages: int, limit: int } }"
+          }
+        },
+        {
+          "name": "Create Product (Protected - Success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Premium Bread\",\n  \"departmentId\": \"bakery\",\n  \"stock\": 120,\n  \"unit\": \"Pcs\",\n  \"cost\": 2.50\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/products" },
+            "description": "Expected status: 201 Created\nResponse shape: { success: true, message: \"Product created successfully.\", data: { id: int, name: string, department_id: string, stock: int, cost: float, status: \"in-stock\", ... } }"
+          }
+        },
+        {
+          "name": "Create Product (Invalid Stock - 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Premium Bread\",\n  \"departmentId\": \"bakery\",\n  \"stock\": -5,\n  \"unit\": \"Pcs\",\n  \"cost\": 2.50\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/products" },
+            "description": "Expected status: 400 Bad Request\nResponse shape: { success: false, message: \"Validation failed.\", errors: [ { field: \"stock\", message: \"Stock must be a non-negative integer.\" } ] }"
+          }
+        },
+        {
+          "name": "Get Product by ID (Public)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/products/1" },
+            "description": "Expected status: 200 OK or 404 Not Found\nResponse shape: { success: true, data: { product } }"
+          }
+        },
+        {
+          "name": "Update Product (Protected - Success)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Premium Bread (Updated)\",\n  \"departmentId\": \"bakery\",\n  \"stock\": 15,\n  \"unit\": \"Pcs\",\n  \"cost\": 2.75\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/products/1" },
+            "description": "Expected status: 200 OK\nChanges stock to 15 (auto-calculates status: 'critical', logs -105 delta in transactions).\nResponse shape: { success: true, message: \"Product updated successfully.\", data: { id: 1, stock: 15, status: \"critical\", ... } }"
+          }
+        },
+        {
+          "name": "Delete Product (Protected)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": { "raw": "http://localhost:5000/api/products/1" },
+            "description": "Expected status: 200 OK or 404 Not Found\nResponse shape: { success: true, message: \"Product deleted successfully.\" }"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Summary (Protected)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": { "raw": "http://localhost:5000/api/dashboard/summary" },
+            "description": "Expected status: 200 OK\nResponse shape: { success: true, data: { totalProducts: int, totalValue: float, statusCounts: { 'in-stock': int, 'low-stock': int, 'critical': int }, departments: [ ... ] } }"
+          }
+        },
+        {
+          "name": "Get Recent Activity (Protected)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": { "raw": "http://localhost:5000/api/dashboard/recent-activity?limit=10" },
+            "description": "Expected status: 200 OK\nResponse shape: { success: true, data: [ { id: int, action: string, details: string, createdAt: string, userName: string } ] }"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alerts",
+      "item": [
+        {
+          "name": "Get Critical Alerts (Protected)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": { "raw": "http://localhost:5000/api/alerts/critical" },
+            "description": "Expected status: 200 OK\nResponse shape: { success: true, data: [ products with status = 'critical' ] }"
+          }
+        },
+        {
+          "name": "Get Low Stock Alerts (Protected)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": { "raw": "http://localhost:5000/api/alerts/low-stock" },
+            "description": "Expected status: 200 OK\nResponse shape: { success: true, data: [ products with status = 'low-stock' ] }"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Get Inventory Value (Protected)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": { "raw": "http://localhost:5000/api/reports/inventory-value" },
+            "description": "Expected status: 200 OK\nResponse shape: { success: true, data: [ { departmentId: string, departmentName: string, productCount: int, totalValue: float } ] }"
+          }
+        },
+        {
+          "name": "Get Stock Distribution (Protected)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": { "raw": "http://localhost:5000/api/reports/stock-distribution" },
+            "description": "Expected status: 200 OK\nResponse shape: { success: true, data: { 'in-stock': int, 'low-stock': int, 'critical': int } }"
+          }
+        },
+        {
+          "name": "Get Combined Summary (Protected)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+            ],
+            "url": { "raw": "http://localhost:5000/api/reports/summary" },
+            "description": "Expected status: 200 OK\nResponse shape: { success: true, data: { totalInventoryValue: float, departmentBreakdown: [ ... ], statusDistribution: { ... } } }"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+
+@import './variables.css';
+
+.reports-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.report-stat-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  animation: fadeIn 0.3s ease both;
+}
+
+.report-stat-label {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+}
+
+.report-stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.report-section {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.report-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 20px;
+}
+
+/* Distribution bars */
+.dist-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.dist-bar-label {
+  font-size: 13px;
+  color: var(--gray-600);
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.dist-bar-track {
+  flex: 1;
+  height: 12px;
+  background: var(--gray-100);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.dist-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
+
+.dist-bar-fill.green { background: var(--green); }
+.dist-bar-fill.amber { background: var(--amber); }
+.dist-bar-fill.red { background: var(--red); }
+
+.dist-bar-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray-700);
+  width: 20px;
+  text-align: right;
+}
+
+/* Department Grid */
+.dept-report-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.dept-report-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.dept-report-card:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.dept-report-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.dept-report-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.dept-report-count {
+  font-size: 12px;
+  color: var(--gray-500);
+}

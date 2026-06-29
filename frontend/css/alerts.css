@@ -1,0 +1,66 @@
+
+@import './variables.css';
+
+.alerts-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.alerts-section-title.critical { color: var(--red); }
+.alerts-section-title.low { color: var(--amber); }
+
+.alerts-count {
+  display: inline-block;
+  margin-left: 4px;
+  font-weight: 600;
+}
+
+.alerts-section { margin-bottom: 30px; }
+
+.alerts-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.alert-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid;
+  transition: var(--transition);
+}
+
+.alert-card:hover { transform: translateX(3px); }
+
+.alert-card.critical {
+  background: var(--red-bg);
+  border-color: var(--red-border);
+}
+
+.alert-card.low {
+  background: var(--amber-bg);
+  border-color: var(--amber-border);
+}
+
+.alert-card-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.alert-card.critical .alert-card-left { color: var(--red); }
+.alert-card.low .alert-card-left { color: var(--amber); }
+
+.alert-card-qty {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.alert-card.critical .alert-card-qty { color: var(--red); }
+.alert-card.low .alert-card-qty { color: var(--amber); }
