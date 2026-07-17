@@ -7,3 +7,4 @@ python-dotenv==1.0.1
 Flask-Cors==4.0.1
 Flask-Limiter==3.7.0
 cryptography==42.0.8
+gunicorn==22.0.0

@@ -1,4 +1,5 @@
 import os
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -10,8 +11,8 @@ class Config:
     ENV = os.getenv("FLASK_ENV", "development")
     DEBUG = ENV == "development"
     
-    # Database Settings (GIMS currently uses SQLite via db.py, 
-    # but these are kept for future MySQL scaling)
+    # Database Settings
+    DB_TYPE = os.getenv("DB_TYPE", "sqlite")
     DB_HOST = os.getenv("DB_HOST", "localhost")
     DB_PORT = int(os.getenv("DB_PORT", 3306))
     DB_USER = os.getenv("DB_USER", "root")
@@ -23,7 +24,8 @@ class Config:
     JWT_EXPIRES_IN = int(os.getenv("JWT_EXPIRES_IN", 86400))  # Default 24 hours
     
     # CORS Origin Whitelist
-    CORS_ORIGIN = os.getenv("CORS_ORIGIN", "http://localhost:3000")
+    _cors_origin_raw = os.getenv("CORS_ORIGIN", "http://localhost:3000")
+    CORS_ORIGIN = [o.strip() for o in _cors_origin_raw.split(",")] if "," in _cors_origin_raw else _cors_origin_raw
     
     if not JWT_SECRET:
         raise ValueError("CRITICAL: JWT_SECRET environment variable is missing!")

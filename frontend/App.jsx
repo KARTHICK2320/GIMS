@@ -8,7 +8,7 @@ import Alerts     from "./components/Alerts.jsx";
 import Reports    from "./components/Reports.jsx";
 import ItemModal  from "./components/ItemModal.jsx";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
 
 // Helper to automate JWT authentication and retries
 async function getAuthToken() {
