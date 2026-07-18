@@ -10,7 +10,8 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 20px;
-  width: 460px;
+  max-width: 460px;
+  width: 100%;
 }
 
 .filter-bar input {
@@ -161,3 +162,52 @@
 }
 
 .btn-delete:hover { background: #FECACA; }
+
+.inventory-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.inventory-table {
+  min-width: 650px;
+}
+
+/* ---- RESPONSIVE MEDIA QUERIES ---- */
+
+@media (max-width: 768px) {
+  .dept-filters {
+    gap: 6px;
+  }
+  .dept-btn {
+    padding: 6px 12px;
+    font-size: 12.5px;
+  }
+  .status-tabs {
+    gap: 6px;
+  }
+  .status-tab {
+    padding: 6px 12px;
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 576px) {
+  .filter-bar input {
+    font-size: 16px; /* Prevents iOS auto-zoom on input focus */
+  }
+  .dept-label {
+    display: block;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .action-btns {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .btn-edit, .btn-delete {
+    padding: 4px 8px;
+    text-align: center;
+    width: 100%;
+  }
+}

@@ -110,6 +110,7 @@ export default function App() {
   const [editItem, setEditItem]   = useState(null);
   const [searchQuery, setSearch]  = useState("");
   const [loading, setLoading]     = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Dynamic API load inventory function
   const loadInventory = async () => {
@@ -203,9 +204,27 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
-      <Sidebar activePage={page} onNavigate={setPage} onAddItem={openAdd} />
+      {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
+      <Sidebar
+        activePage={page}
+        onNavigate={(p) => {
+          setPage(p);
+          setSidebarOpen(false);
+        }}
+        onAddItem={() => {
+          openAdd();
+          setSidebarOpen(false);
+        }}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
       <div className="main-content">
-        <Header page={page} searchQuery={searchQuery} onSearch={setSearch} />
+        <Header
+          page={page}
+          searchQuery={searchQuery}
+          onSearch={setSearch}
+          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        />
         {renderPage()}
       </div>
       <ItemModal

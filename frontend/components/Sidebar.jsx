@@ -7,15 +7,16 @@ const navItems = [
   { id: "reports",   label: "Reports",    icon: "📊" },
 ];
 
-export default function Sidebar({ activePage, onNavigate, onAddItem }) {
+export default function Sidebar({ activePage, onNavigate, onAddItem, isOpen, onClose }) {
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
       <div className="sidebar-logo">
         <div className="sidebar-logo-icon">📦</div>
         <div className="sidebar-logo-text">
           <h2>Inventory</h2>
           <span>Management</span>
         </div>
+        <button className="sidebar-close-btn" onClick={onClose} aria-label="Close sidebar">✕</button>
       </div>
       <button className="sidebar-add-btn" onClick={onAddItem}>
         <span>+</span> Add New Item

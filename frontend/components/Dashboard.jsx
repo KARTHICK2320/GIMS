@@ -90,22 +90,24 @@ export default function Dashboard({ inventory, onNavigate }) {
             <div className="section-title" style={{ marginBottom: 0 }}>Inventory</div>
             <span className="panel-total">Total Value: ₹{totalValue.toLocaleString("en-IN")}</span>
           </div>
-          <table className="inv-table">
-            <thead>
-              <tr><th>Product</th><th>Department</th><th>Stock</th><th>Cost</th><th>Status</th></tr>
-            </thead>
-            <tbody>
-              {inventory.slice(0, 8).map((item) => (
-                <tr key={item.id}>
-                  <td>{item.name}</td>
-                  <td style={{ color: "var(--gray-500)", fontSize: 13 }}>{getDeptName(item.department)}</td>
-                  <td>{item.stock} {item.unit}</td>
-                  <td>₹{item.cost.toLocaleString("en-IN")}</td>
-                  <td><StatusBadge status={item.status} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="inv-table-wrapper">
+            <table className="inv-table">
+              <thead>
+                <tr><th>Product</th><th>Department</th><th>Stock</th><th>Cost</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                {inventory.slice(0, 8).map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.name}</td>
+                    <td style={{ color: "var(--gray-500)", fontSize: 13 }}>{getDeptName(item.department)}</td>
+                    <td>{item.stock} {item.unit}</td>
+                    <td>₹{item.cost.toLocaleString("en-IN")}</td>
+                    <td><StatusBadge status={item.status} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

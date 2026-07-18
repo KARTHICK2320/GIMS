@@ -64,3 +64,14 @@
 
 .alert-card.critical .alert-card-qty { color: var(--red); }
 .alert-card.low .alert-card-qty { color: var(--amber); }
+
+/* ---- RESPONSIVE MEDIA QUERIES ---- */
+
+@media (max-width: 576px) {
+  .alerts-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .alert-card {
+    padding: 12px 14px;
+  }
+}

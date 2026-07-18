@@ -7,13 +7,16 @@ const pageTitles = {
   reports:   { title: "Reports",    subtitle: "Inventory analytics and summaries" },
 };
 
-export default function Header({ page, searchQuery, onSearch }) {
+export default function Header({ page, searchQuery, onSearch, onToggleSidebar }) {
   const info = pageTitles[page] || pageTitles.dashboard;
   return (
     <header className="header">
-      <div className="header-title">
-        <h1>{info.title}</h1>
-        <p>{info.subtitle}</p>
+      <div className="header-left">
+        <button className="sidebar-toggle-btn" onClick={onToggleSidebar} aria-label="Toggle sidebar">☰</button>
+        <div className="header-title">
+          <h1>{info.title}</h1>
+          <p>{info.subtitle}</p>
+        </div>
       </div>
       <div className="header-actions">
         <div className="search-box">

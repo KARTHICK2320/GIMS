@@ -216,3 +216,42 @@
 .status-in-stock { color: var(--green); background: var(--green-bg); }
 .status-low-stock { color: var(--amber); background: var(--amber-bg); }
 .status-critical { color: var(--red); background: var(--red-bg); }
+
+.inv-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.inv-table {
+  min-width: 500px;
+}
+
+/* ---- RESPONSIVE MEDIA QUERIES ---- */
+
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .alerts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .stat-card {
+    padding: 16px;
+  }
+  .stat-card-value {
+    font-size: 28px;
+  }
+}
