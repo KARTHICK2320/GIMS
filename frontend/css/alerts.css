@@ -1,10 +1,19 @@
 
 @import './variables.css';
 
+/* ==========================================================================
+   ALERTS VIEW
+   ========================================================================== */
+.alerts-section {
+  margin-bottom: 30px;
+}
+
 .alerts-section-title {
-  font-size: 16px;
+  font-size: clamp(15px, 2vw, 16px);
   font-weight: 700;
   margin-bottom: 14px;
+  display: flex;
+  align-items: center;
 }
 
 .alerts-section-title.critical { color: var(--red); }
@@ -12,16 +21,14 @@
 
 .alerts-count {
   display: inline-block;
-  margin-left: 4px;
+  margin-left: 6px;
   font-weight: 600;
 }
 
-.alerts-section { margin-bottom: 30px; }
-
 .alerts-cards-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 .alert-card {
@@ -32,9 +39,13 @@
   border-radius: var(--radius-md);
   border: 1px solid;
   transition: var(--transition);
+  min-width: 0;
+  gap: 12px;
 }
 
-.alert-card:hover { transform: translateX(3px); }
+.alert-card:hover {
+  transform: translateX(3px);
+}
 
 .alert-card.critical {
   background: var(--red-bg);
@@ -52,6 +63,14 @@
   gap: 10px;
   font-weight: 500;
   font-size: 14px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.alert-card-left span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .alert-card.critical .alert-card-left { color: var(--red); }
@@ -60,18 +79,82 @@
 .alert-card-qty {
   font-weight: 700;
   font-size: 14px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .alert-card.critical .alert-card-qty { color: var(--red); }
 .alert-card.low .alert-card-qty { color: var(--amber); }
 
-/* ---- RESPONSIVE MEDIA QUERIES ---- */
+/* ==========================================================================
+   BREAKPOINTS: ALERTS RESPONSIVENESS
+   ========================================================================== */
 
-@media (max-width: 576px) {
+/* ---- 1. DESKTOP (1440px and above) ---- */
+@media (min-width: 1440px) {
+  .alerts-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+}
+
+/* ---- 2. LAPTOP (1024px to 1439px) ---- */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .alerts-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* ---- 3. TABLET (768px to 1023px) ---- */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .alerts-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .alert-card {
+    padding: 12px 16px;
+  }
+}
+
+/* ---- 4. MOBILE (375px to 767px) ---- */
+@media (max-width: 767px) {
   .alerts-cards-grid {
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .alerts-section {
+    margin-bottom: 24px;
   }
   .alert-card {
     padding: 12px 14px;
+  }
+  .alert-card-left {
+    font-size: 13.5px;
+    gap: 8px;
+  }
+  .alert-card-qty {
+    font-size: 13px;
+  }
+}
+
+/* ---- 5. SMALL MOBILE (320px to 374px) ---- */
+@media (max-width: 374px) {
+  .alerts-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .alerts-section {
+    margin-bottom: 20px;
+  }
+  .alert-card {
+    padding: 10px 12px;
+  }
+  .alert-card-left {
+    font-size: 13px;
+    gap: 6px;
+  }
+  .alert-card-qty {
+    font-size: 12.5px;
   }
 }

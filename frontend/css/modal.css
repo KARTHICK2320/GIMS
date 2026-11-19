@@ -1,15 +1,22 @@
 
 @import './variables.css';
 
+/* ==========================================================================
+   MODAL OVERLAY & CONTAINER
+   ========================================================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15,23,42,0.5);
+  background: rgba(15, 23, 42, 0.55);
   backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: clamp(12px, 3vw, 24px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal-box {
@@ -20,6 +27,11 @@
   max-width: 440px;
   box-shadow: var(--shadow-lg);
   animation: scalePop 0.25s ease both;
+  max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: auto;
 }
 
 .modal-header {
@@ -27,12 +39,14 @@
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 20px;
+  gap: 12px;
 }
 
 .modal-title {
   font-size: 18px;
   font-weight: 700;
   color: var(--gray-900);
+  line-height: 1.2;
 }
 
 .modal-subtitle {
@@ -44,19 +58,30 @@
 .modal-close {
   background: var(--gray-100);
   border-radius: var(--radius-sm);
-  width: 28px;
-  height: 28px;
+  width: var(--min-touch-target);
+  height: var(--min-touch-target);
+  min-width: var(--min-touch-target);
+  min-height: var(--min-touch-target);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
   color: var(--gray-500);
   transition: var(--transition);
+  border: none;
+  flex-shrink: 0;
 }
 
-.modal-close:hover { background: var(--gray-200); color: var(--gray-800); }
+.modal-close:hover,
+.modal-close:focus-visible {
+  background: var(--gray-200);
+  color: var(--gray-800);
+}
 
+/* ==========================================================================
+   FORM INPUTS & GROUPS
+   ========================================================================== */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -70,7 +95,8 @@
   color: var(--gray-700);
 }
 
-.form-input, .form-select {
+.form-input,
+.form-select {
   background: var(--gray-50);
   border: 1.5px solid var(--gray-200);
   border-radius: var(--radius-md);
@@ -81,10 +107,11 @@
   transition: var(--transition);
 }
 
-.form-input:focus, .form-select:focus {
+.form-input:focus,
+.form-select:focus {
   border-color: var(--primary);
   background: var(--white);
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .form-row {
@@ -96,12 +123,17 @@
 .modal-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 10px;
   margin-top: 22px;
 }
 
 .btn-cancel {
-  padding: 9px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  min-height: var(--min-touch-target);
   border-radius: var(--radius-md);
   font-size: 13.5px;
   font-weight: 600;
@@ -109,39 +141,66 @@
   color: var(--gray-700);
   border: 1.5px solid var(--gray-200);
   transition: var(--transition);
+  cursor: pointer;
 }
 
-.btn-cancel:hover { background: var(--gray-50); }
+.btn-cancel:hover {
+  background: var(--gray-50);
+}
 
 .btn-submit {
-  padding: 9px 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  min-height: var(--min-touch-target);
   border-radius: var(--radius-md);
   font-size: 13.5px;
   font-weight: 600;
   background: var(--primary);
   color: var(--white);
   transition: var(--transition);
+  cursor: pointer;
 }
 
-.btn-submit:hover { background: var(--primary-dark); }
-
-.modal-box {
-  max-height: 90vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+.btn-submit:hover {
+  background: var(--primary-dark);
 }
 
-/* ---- RESPONSIVE MEDIA QUERIES ---- */
+/* ==========================================================================
+   BREAKPOINTS: MODAL RESPONSIVENESS
+   ========================================================================== */
 
-@media (max-width: 480px) {
+/* ---- 1. DESKTOP & LAPTOP (1024px and above) ---- */
+@media (min-width: 1024px) {
   .modal-box {
-    width: calc(100% - 32px);
-    margin: 16px;
-    padding: 20px;
+    padding: 28px;
   }
-  .form-input, .form-select {
-    font-size: 16px; /* Prevents iOS auto-zoom on input focus */
-    padding: 12px;
+}
+
+/* ---- 2. TABLET (768px to 1023px) ---- */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .modal-box {
+    padding: 24px;
+    max-width: 420px;
+  }
+}
+
+/* ---- 3. MOBILE (375px to 767px) ---- */
+@media (max-width: 767px) {
+  .modal-overlay {
+    padding: 16px;
+  }
+  .modal-box {
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    max-height: calc(100vh - 32px);
+    max-height: calc(100dvh - 32px);
+  }
+  .form-input,
+  .form-select {
+    font-size: 16px; /* Prevents iOS WebKit automatic zooming on input focus */
+    padding: 11px 14px;
   }
   .form-row {
     grid-template-columns: 1fr;
@@ -150,9 +209,50 @@
   .modal-actions {
     flex-direction: column-reverse;
     gap: 8px;
+    width: 100%;
   }
   .modal-actions button {
     width: 100%;
-    padding: 12px;
+    min-height: 44px;
+  }
+}
+
+/* ---- 4. SMALL MOBILE (320px to 374px) ---- */
+@media (max-width: 374px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+  .modal-box {
+    padding: 16px;
+    max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
+    border-radius: var(--radius-md);
+  }
+  .modal-title {
+    font-size: 16px;
+  }
+  .modal-subtitle {
+    font-size: 12px;
+  }
+  .form-group {
+    margin-bottom: 12px;
+    gap: 4px;
+  }
+  .form-label {
+    font-size: 12px;
+  }
+  .form-input,
+  .form-select {
+    padding: 9px 12px;
+    font-size: 16px;
+  }
+  .modal-actions {
+    margin-top: 16px;
+    gap: 6px;
+  }
+  .modal-actions button {
+    padding: 10px;
+    font-size: 13px;
+    min-height: 42px;
   }
 }

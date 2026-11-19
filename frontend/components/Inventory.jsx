@@ -1,25 +1,11 @@
 // Inventory Page Component showing full products list with filters and search
 import { useState } from "react";
-
-const departments = [
-  { id: "grocery", name: "Grocery", icon: "🛒" },
-  { id: "fruits-vegetables", name: "Fruits & Vegetables", icon: "🥬" },
-  { id: "dairy", name: "Dairy Products", icon: "🧀" },
-  { id: "beverages", name: "Beverages", icon: "🥤" },
-  { id: "bakery", name: "Bakery", icon: "📦" },
-  { id: "household", name: "Household", icon: "🏠" },
-];
-
-const statusConfig = {
-  "in-stock":  { label: "In Stock",  color: "#22C55E", bg: "#F0FDF4" },
-  "low-stock": { label: "Low Stock", color: "#F59E0B", bg: "#FFFBEB" },
-  "critical":  { label: "Critical",  color: "#EF4444", bg: "#FEF2F2" },
-};
-
-function StatusBadge({ status }) {
-  const cfg = statusConfig[status];
-  return <span className="status-badge" style={{ color: cfg.color, background: cfg.bg }}>{cfg.label}</span>;
-}
+import { Search, PackageSearch, Pencil, Trash2 } from "lucide-react";
+import {
+  departments,
+  DepartmentIcon,
+  StatusBadge,
+} from "../data/inventoryData.js";
 
 export default function Inventory({ inventory, onEdit, onDelete, searchQuery }) {
   const [activeDept, setActiveDept]     = useState("all");
@@ -53,7 +39,7 @@ export default function Inventory({ inventory, onEdit, onDelete, searchQuery }) 
   return (
     <div className="page-body fade-in">
       <div className="filter-bar">
-        <span style={{ color: "var(--gray-400)", fontSize: 14 }}>🔍</span>
+        <Search size={15} color="var(--gray-400)" aria-hidden="true" style={{ flexShrink: 0 }} />
         <input
           type="text"
           placeholder="Search by name & Departments..."
@@ -64,13 +50,23 @@ export default function Inventory({ inventory, onEdit, onDelete, searchQuery }) 
 
       <div className="dept-filters">
         <span className="dept-label">Department</span>
-        <button className={`dept-btn ${activeDept === "all" ? "active" : ""}`} onClick={() => setActiveDept("all")}>All</button>
+        <button
+          type="button"
+          className={`dept-btn ${activeDept === "all" ? "active" : ""}`}
+          onClick={() => setActiveDept("all")}
+        >
+          All
+        </button>
         {departments.map((d) => (
           <button
             key={d.id}
+            type="button"
             className={`dept-btn ${activeDept === d.id ? "active" : ""}`}
             onClick={() => setActiveDept(d.id)}
-          >{d.icon} {d.name}</button>
+          >
+            <DepartmentIcon id={d.id} size={14} style={{ marginRight: 6 }} />
+            {d.name}
+          </button>
         ))}
       </div>
 
@@ -78,9 +74,12 @@ export default function Inventory({ inventory, onEdit, onDelete, searchQuery }) 
         {statusTabs.map((tab) => (
           <button
             key={tab.key}
+            type="button"
             className={`status-tab ${activeStatus === tab.key ? "active" : ""}`}
             onClick={() => setActiveStatus(tab.key)}
-          >{tab.label} <span className="count">{counts[tab.key]}</span></button>
+          >
+            {tab.label} <span className="count">{counts[tab.key]}</span>
+          </button>
         ))}
       </div>
 
@@ -93,7 +92,12 @@ export default function Inventory({ inventory, onEdit, onDelete, searchQuery }) 
           </thead>
           <tbody>
             {filtered.length === 0 ? (
-              <tr><td colSpan={6} style={{ textAlign: "center", color: "var(--gray-400)", padding: 40 }}>No items found.</td></tr>
+              <tr>
+                <td colSpan={6} style={{ textAlign: "center", color: "var(--gray-400)", padding: 40 }}>
+                  <PackageSearch size={32} style={{ margin: "0 auto 8px", display: "block", opacity: 0.5 }} aria-hidden="true" />
+                  No items found.
+                </td>
+              </tr>
             ) : filtered.map((item) => (
               <tr key={item.id}>
                 <td className="product-name">{item.name}</td>
@@ -103,8 +107,22 @@ export default function Inventory({ inventory, onEdit, onDelete, searchQuery }) 
                 <td><StatusBadge status={item.status} /></td>
                 <td>
                   <div className="action-btns">
-                    <button className="btn-edit" onClick={() => onEdit(item)}>Edit</button>
-                    <button className="btn-delete" onClick={() => onDelete(item.id)}>Delete</button>
+                    <button
+                      type="button"
+                      className="btn-edit"
+                      onClick={() => onEdit(item)}
+                    >
+                      <Pencil size={12} style={{ marginRight: 4 }} aria-hidden="true" />
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-delete"
+                      onClick={() => onDelete(item.id)}
+                    >
+                      <Trash2 size={12} style={{ marginRight: 4 }} aria-hidden="true" />
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>

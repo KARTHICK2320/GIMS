@@ -1,6 +1,9 @@
 
 @import './variables.css';
 
+/* ==========================================================================
+   FILTER BAR & SEARCH
+   ========================================================================== */
 .filter-bar {
   background: var(--white);
   border: 1px solid var(--gray-200);
@@ -8,22 +11,33 @@
   padding: 10px 16px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 20px;
   max-width: 460px;
   width: 100%;
+  transition: var(--transition);
+}
+
+.filter-bar:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .filter-bar input {
   border: none;
   background: transparent;
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--gray-700);
   width: 100%;
 }
 
-.filter-bar input::placeholder { color: var(--gray-400); }
+.filter-bar input::placeholder {
+  color: var(--gray-400);
+}
 
+/* ==========================================================================
+   DEPARTMENT FILTER PILLS
+   ========================================================================== */
 .dept-filters {
   display: flex;
   align-items: center;
@@ -42,10 +56,12 @@
 }
 
 .dept-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 6px 14px;
+  min-height: 38px;
   border-radius: 99px;
   font-size: 13px;
   font-weight: 500;
@@ -54,9 +70,13 @@
   border: 1.5px solid var(--gray-200);
   cursor: pointer;
   transition: var(--transition);
+  white-space: nowrap;
 }
 
-.dept-btn:hover { border-color: var(--primary); color: var(--primary); }
+.dept-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
 
 .dept-btn.active {
   background: var(--primary);
@@ -64,15 +84,31 @@
   border-color: var(--primary);
 }
 
+/* ==========================================================================
+   STATUS TABS
+   ========================================================================== */
 .status-tabs {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 20px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  padding-bottom: 4px;
+}
+
+.status-tabs::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .status-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 6px 14px;
+  min-height: 38px;
   border-radius: 99px;
   font-size: 13px;
   font-weight: 500;
@@ -81,9 +117,13 @@
   background: var(--white);
   color: var(--gray-600);
   transition: var(--transition);
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.status-tab:hover { border-color: var(--gray-300); }
+.status-tab:hover {
+  border-color: var(--gray-300);
+}
 
 .status-tab.active {
   background: var(--primary);
@@ -93,19 +133,25 @@
 
 .status-tab .count {
   display: inline-block;
-  margin-left: 4px;
+  margin-left: 6px;
   font-weight: 700;
 }
 
+/* ==========================================================================
+   INVENTORY DATA TABLE
+   ========================================================================== */
 .inventory-table-wrapper {
   background: var(--white);
   border-radius: var(--radius-lg);
   border: 1px solid var(--gray-200);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
 
 .inventory-table {
   width: 100%;
+  min-width: 650px;
   border-collapse: collapse;
 }
 
@@ -117,6 +163,7 @@
   color: var(--primary);
   background: var(--gray-50);
   border-bottom: 1px solid var(--gray-200);
+  white-space: nowrap;
 }
 
 .inventory-table td {
@@ -124,29 +171,46 @@
   font-size: 13.5px;
   color: var(--gray-700);
   border-bottom: 1px solid var(--gray-100);
+  white-space: nowrap;
 }
 
-.inventory-table tr:last-child td { border-bottom: none; }
-.inventory-table tr:hover td { background: var(--gray-50); }
+.inventory-table tr:last-child td {
+  border-bottom: none;
+}
+
+.inventory-table tr:hover td {
+  background: var(--gray-50);
+}
 
 .product-name {
   font-weight: 600;
   color: var(--gray-900);
 }
 
-.dept-text { color: var(--gray-500); font-size: 13px; }
+.dept-text {
+  color: var(--gray-500);
+  font-size: 13px;
+}
 
 .action-btns {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
-.btn-edit, .btn-delete {
-  padding: 5px 12px;
+.btn-edit,
+.btn-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  min-height: 34px;
   border-radius: var(--radius-sm);
   font-size: 12px;
   font-weight: 500;
   transition: var(--transition);
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .btn-edit {
@@ -154,30 +218,41 @@
   color: var(--primary);
 }
 
-.btn-edit:hover { background: #BFDBFE; }
+.btn-edit:hover {
+  background: #BFDBFE;
+}
 
 .btn-delete {
   background: var(--red-bg);
   color: var(--red);
 }
 
-.btn-delete:hover { background: #FECACA; }
-
-.inventory-table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+.btn-delete:hover {
+  background: #FECACA;
 }
 
-.inventory-table {
-  min-width: 650px;
+/* ==========================================================================
+   BREAKPOINTS: INVENTORY RESPONSIVENESS
+   ========================================================================== */
+
+/* ---- 1. DESKTOP (1440px and above) ---- */
+@media (min-width: 1440px) {
+  .filter-bar {
+    max-width: 480px;
+  }
 }
 
-/* ---- RESPONSIVE MEDIA QUERIES ---- */
+/* ---- 2. LAPTOP (1024px to 1439px) ---- */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .filter-bar {
+    max-width: 440px;
+  }
+}
 
-@media (max-width: 768px) {
+/* ---- 3. TABLET (768px to 1023px) ---- */
+@media (min-width: 768px) and (max-width: 1023px) {
   .dept-filters {
-    gap: 6px;
+    gap: 8px;
   }
   .dept-btn {
     padding: 6px 12px;
@@ -192,7 +267,12 @@
   }
 }
 
-@media (max-width: 576px) {
+/* ---- 4. MOBILE (375px to 767px) ---- */
+@media (max-width: 767px) {
+  .filter-bar {
+    max-width: 100%;
+    margin-bottom: 16px;
+  }
   .filter-bar input {
     font-size: 16px; /* Prevents iOS auto-zoom on input focus */
   }
@@ -201,13 +281,76 @@
     width: 100%;
     margin-bottom: 4px;
   }
+  .dept-filters {
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .dept-btn {
+    padding: 6px 12px;
+    font-size: 12.5px;
+  }
+  .status-tabs {
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .status-tab {
+    padding: 6px 12px;
+    font-size: 12.5px;
+  }
+  .inventory-table th,
+  .inventory-table td {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
   .action-btns {
-    flex-direction: column;
+    gap: 6px;
+  }
+  .btn-edit,
+  .btn-delete {
+    padding: 5px 10px;
+    font-size: 11.5px;
+  }
+}
+
+/* ---- 5. SMALL MOBILE (320px to 374px) ---- */
+@media (max-width: 374px) {
+  .filter-bar {
+    padding: 8px 12px;
+  }
+  .filter-bar input {
+    font-size: 15px;
+  }
+  .dept-filters {
     gap: 4px;
   }
-  .btn-edit, .btn-delete {
+  .dept-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+  .status-tabs {
+    gap: 4px;
+  }
+  .status-tab {
+    padding: 5px 10px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+  .inventory-table {
+    min-width: 580px;
+  }
+  .inventory-table th,
+  .inventory-table td {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+  .action-btns {
+    gap: 4px;
+  }
+  .btn-edit,
+  .btn-delete {
     padding: 4px 8px;
-    text-align: center;
-    width: 100%;
+    font-size: 11px;
+    min-height: 32px;
   }
 }

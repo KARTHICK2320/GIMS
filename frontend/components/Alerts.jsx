@@ -1,4 +1,5 @@
 // Alerts Page Component displaying critical and low stock warning cards
+import { AlertTriangle, Package, CheckCircle2 } from "lucide-react";
 
 export default function Alerts({ inventory }) {
   const critical = inventory.filter((i) => i.status === "critical");
@@ -7,7 +8,11 @@ export default function Alerts({ inventory }) {
   const AlertCard = ({ item }) => (
     <div className={`alert-card ${item.status}`}>
       <div className="alert-card-left">
-        <span>{item.status === "critical" ? "⚠️" : "📦"}</span>
+        {item.status === "critical" ? (
+          <AlertTriangle size={16} color="var(--red)" aria-hidden="true" />
+        ) : (
+          <Package size={16} color="var(--amber)" aria-hidden="true" />
+        )}
         <span>{item.name}</span>
       </div>
       <span className="alert-card-qty">{item.stock} {item.unit}</span>
@@ -21,7 +26,13 @@ export default function Alerts({ inventory }) {
           Critical Stock <span className="alerts-count">({critical.length})</span>
         </div>
         <div className="alerts-cards-grid">
-          {critical.map((item) => <AlertCard key={item.id} item={item} />)}
+          {critical.length === 0 ? (
+            <div style={{ color: "var(--gray-400)", fontSize: 13.5, padding: "12px 0", display: "flex", alignItems: "center", gap: 8 }}>
+              <CheckCircle2 size={16} color="var(--green)" aria-hidden="true" /> No critical stock items.
+            </div>
+          ) : (
+            critical.map((item) => <AlertCard key={item.id} item={item} />)
+          )}
         </div>
       </div>
 
@@ -30,7 +41,13 @@ export default function Alerts({ inventory }) {
           Low Stock <span className="alerts-count">({lowStock.length})</span>
         </div>
         <div className="alerts-cards-grid">
-          {lowStock.map((item) => <AlertCard key={item.id} item={item} />)}
+          {lowStock.length === 0 ? (
+            <div style={{ color: "var(--gray-400)", fontSize: 13.5, padding: "12px 0", display: "flex", alignItems: "center", gap: 8 }}>
+              <CheckCircle2 size={16} color="var(--green)" aria-hidden="true" /> No low stock items.
+            </div>
+          ) : (
+            lowStock.map((item) => <AlertCard key={item.id} item={item} />)
+          )}
         </div>
       </div>
     </div>

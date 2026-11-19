@@ -1,6 +1,9 @@
 
 @import './variables.css';
 
+/* ==========================================================================
+   STAT CARDS
+   ========================================================================== */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -18,34 +21,44 @@
   gap: 8px;
   transition: var(--transition);
   animation: fadeIn 0.3s ease both;
+  min-width: 0;
 }
 
-.stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
 
 .stat-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 }
 
 .stat-card-label {
   font-size: 13px;
   color: var(--gray-500);
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stat-card-icon {
   width: 32px;
   height: 32px;
+  min-width: 32px;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 16px;
+  flex-shrink: 0;
 }
 
 .stat-card-value {
-  font-size: 32px;
+  font-size: clamp(24px, 3.2vw, 32px);
   font-weight: 700;
   line-height: 1;
 }
@@ -60,16 +73,11 @@
 .stat-amber  { background: var(--amber-bg); border-color: var(--amber-border); }
 .stat-green  { background: var(--green-bg); border-color: var(--green-border); }
 
-/* Dashboard Grid */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 20px;
-}
-
-/* Stock Alerts Section */
+/* ==========================================================================
+   STOCK ALERTS SECTION
+   ========================================================================== */
 .section-title {
-  font-size: 16px;
+  font-size: clamp(15px, 2vw, 16px);
   font-weight: 700;
   color: var(--gray-800);
   margin-bottom: 14px;
@@ -90,6 +98,8 @@
   border-radius: var(--radius-md);
   border: 1px solid;
   transition: var(--transition);
+  min-width: 0;
+  gap: 12px;
 }
 
 .alert-chip.low {
@@ -108,6 +118,14 @@
   gap: 8px;
   font-size: 13.5px;
   font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.alert-chip-left span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .alert-chip.low .alert-chip-left { color: var(--amber); }
@@ -116,10 +134,22 @@
 .alert-chip-value {
   font-size: 13px;
   font-weight: 700;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .alert-chip.low .alert-chip-value { color: var(--amber); }
 .alert-chip.critical .alert-chip-value { color: var(--red); }
+
+/* ==========================================================================
+   DASHBOARD MAIN GRID (Departments + Inventory Table)
+   ========================================================================== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  align-items: start;
+}
 
 /* Departments Panel */
 .departments-panel {
@@ -127,22 +157,32 @@
   border-radius: var(--radius-lg);
   padding: 20px;
   border: 1px solid var(--gray-200);
+  min-width: 0;
 }
 
-.dept-list { display: flex; flex-direction: column; gap: 8px; }
+.dept-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
 .dept-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
+  min-height: var(--min-touch-target);
   background: var(--primary);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: var(--transition);
+  gap: 10px;
 }
 
-.dept-item:hover { filter: brightness(1.1); }
+.dept-item:hover {
+  filter: brightness(1.1);
+  transform: translateX(2px);
+}
 
 .dept-item-left {
   display: flex;
@@ -151,23 +191,32 @@
   color: var(--white);
   font-size: 13.5px;
   font-weight: 500;
+  min-width: 0;
+}
+
+.dept-item-left span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dept-badge {
-  background: rgba(255,255,255,0.25);
+  background: rgba(255, 255, 255, 0.25);
   color: var(--white);
   font-size: 11px;
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 99px;
+  flex-shrink: 0;
 }
 
-/* Inventory Mini Table */
+/* Inventory Mini Table Panel */
 .inventory-panel {
   background: var(--white);
   border-radius: var(--radius-lg);
   border: 1px solid var(--gray-200);
   overflow: hidden;
+  min-width: 0;
 }
 
 .inventory-panel-header {
@@ -176,46 +225,16 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--gray-100);
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .panel-total {
   font-size: 12px;
   color: var(--gray-500);
-}
-
-.inv-table { width: 100%; border-collapse: collapse; }
-
-.inv-table th {
-  text-align: left;
-  font-size: 12px;
   font-weight: 600;
-  color: var(--primary);
-  padding: 10px 18px;
-  background: var(--gray-50);
-  border-bottom: 1px solid var(--gray-200);
+  white-space: nowrap;
 }
-
-.inv-table td {
-  padding: 12px 18px;
-  font-size: 13.5px;
-  border-bottom: 1px solid var(--gray-100);
-  color: var(--gray-700);
-}
-
-.inv-table tr:last-child td { border-bottom: none; }
-.inv-table tr:hover td { background: var(--gray-50); }
-
-.status-badge {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 99px;
-  display: inline-block;
-}
-
-.status-in-stock { color: var(--green); background: var(--green-bg); }
-.status-low-stock { color: var(--amber); background: var(--amber-bg); }
-.status-critical { color: var(--red); background: var(--red-bg); }
 
 .inv-table-wrapper {
   width: 100%;
@@ -224,34 +243,198 @@
 }
 
 .inv-table {
+  width: 100%;
   min-width: 500px;
+  border-collapse: collapse;
 }
 
-/* ---- RESPONSIVE MEDIA QUERIES ---- */
+.inv-table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  padding: 11px 18px;
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-200);
+  white-space: nowrap;
+}
 
-@media (max-width: 1024px) {
+.inv-table td {
+  padding: 12px 18px;
+  font-size: 13.5px;
+  border-bottom: 1px solid var(--gray-100);
+  color: var(--gray-700);
+  white-space: nowrap;
+}
+
+.inv-table tr:last-child td {
+  border-bottom: none;
+}
+
+.inv-table tr:hover td {
+  background: var(--gray-50);
+}
+
+.status-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.status-in-stock { color: var(--green); background: var(--green-bg); }
+.status-low-stock { color: var(--amber); background: var(--amber-bg); }
+.status-critical { color: var(--red); background: var(--red-bg); }
+
+/* ==========================================================================
+   BREAKPOINTS: DASHBOARD RESPONSIVENESS
+   ========================================================================== */
+
+/* ---- 1. DESKTOP (1440px and above) ---- */
+@media (min-width: 1440px) {
   .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .dashboard-grid {
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
   }
 }
 
-@media (max-width: 768px) {
+/* ---- 2. LAPTOP (1024px to 1439px) ---- */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .dashboard-grid {
+    grid-template-columns: 260px 1fr;
+    gap: 16px;
+  }
+}
+
+/* ---- 3. TABLET (768px to 1023px) ----
+   Optimized 2-column layout. When stacked, departments panel forms a clean
+   multi-column grid so the table below has maximum horizontal space.
+*/
+@media (min-width: 768px) and (max-width: 1023px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .alerts-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
   .dashboard-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .dept-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .inventory-panel {
+    width: 100%;
+  }
+}
+
+/* ---- 4. MOBILE (375px to 767px) ----
+   Touch-friendly spacing, 2-col stats, 1-col alerts, clean stacked structure.
+*/
+@media (max-width: 767px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .stat-card {
+    padding: 14px 16px;
+  }
+  .stat-card-label {
+    font-size: 12px;
+  }
+  .stat-card-value {
+    font-size: 26px;
   }
   .alerts-grid {
     grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .alert-chip {
+    padding: 10px 14px;
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .departments-panel {
+    padding: 16px;
+  }
+  .dept-item {
+    padding: 10px 14px;
+  }
+  .inventory-panel-header {
+    padding: 14px 16px;
+  }
+  .inv-table th,
+  .inv-table td {
+    padding: 10px 14px;
+    font-size: 13px;
   }
 }
 
-@media (max-width: 480px) {
+/* ---- 5. SMALL MOBILE (320px to 374px) ----
+   Single-column cards with compact padding preventing any clipping.
+*/
+@media (max-width: 374px) {
   .stats-grid {
     grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
   }
   .stat-card {
-    padding: 16px;
+    padding: 12px 14px;
+    gap: 6px;
   }
   .stat-card-value {
-    font-size: 28px;
+    font-size: 24px;
+  }
+  .alerts-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .alert-chip {
+    padding: 8px 12px;
+    font-size: 12.5px;
+  }
+  .departments-panel {
+    padding: 14px;
+  }
+  .dept-item {
+    padding: 9px 12px;
+  }
+  .dept-item-left {
+    font-size: 13px;
+  }
+  .inventory-panel-header {
+    padding: 12px 14px;
+  }
+  .panel-total {
+    font-size: 11px;
+  }
+  .inv-table {
+    min-width: 440px;
+  }
+  .inv-table th,
+  .inv-table td {
+    padding: 9px 12px;
+    font-size: 12.5px;
   }
 }

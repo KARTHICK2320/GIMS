@@ -1,14 +1,7 @@
 // Add/Edit Item Modal Component for inventory management form
 import { useState, useEffect } from "react";
-
-const departments = [
-  { id: "grocery", name: "Grocery", icon: "🛒" },
-  { id: "fruits-vegetables", name: "Fruits & Vegetables", icon: "🥬" },
-  { id: "dairy", name: "Dairy Products", icon: "🧀" },
-  { id: "beverages", name: "Beverages", icon: "🥤" },
-  { id: "bakery", name: "Bakery", icon: "📦" },
-  { id: "household", name: "Household", icon: "🏠" },
-];
+import { X } from "lucide-react";
+import { departments } from "../data/inventoryData.js";
 
 const defaultForm = {
   name: "", department: "", stock: "", unit: "Nos", cost: "", status: "in-stock",
@@ -48,7 +41,14 @@ export default function ItemModal({ isOpen, onClose, onSave, editItem }) {
               Fill in the details to {editItem ? "update" : "add"} an inventory item.
             </div>
           </div>
-          <button className="modal-close" onClick={onClose}>✕</button>
+          <button
+            type="button"
+            className="modal-close"
+            onClick={onClose}
+            aria-label="Close modal"
+          >
+            <X size={18} aria-hidden="true" />
+          </button>
         </div>
 
         <div className="form-group">
@@ -70,7 +70,7 @@ export default function ItemModal({ isOpen, onClose, onSave, editItem }) {
           >
             <option value="">Select department</option>
             {departments.map((d) => (
-              <option key={d.id} value={d.id}>{d.icon} {d.name}</option>
+              <option key={d.id} value={d.id}>{d.name}</option>
             ))}
           </select>
         </div>
@@ -146,8 +146,8 @@ export default function ItemModal({ isOpen, onClose, onSave, editItem }) {
         </div>
 
         <div className="modal-actions">
-          <button className="btn-cancel" onClick={onClose}>Cancel</button>
-          <button className="btn-submit" onClick={handleSave}>
+          <button type="button" className="btn-cancel" onClick={onClose}>Cancel</button>
+          <button type="button" className="btn-submit" onClick={handleSave}>
             {editItem ? "Save Changes" : "Add Item"}
           </button>
         </div>

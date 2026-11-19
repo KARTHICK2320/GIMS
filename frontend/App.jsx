@@ -1,5 +1,6 @@
 // Root App Component managing active views and global inventory state
 import { useState, useEffect } from "react";
+import { Loader2 } from "lucide-react";
 import Sidebar    from "./components/Sidebar.jsx";
 import Header     from "./components/Header.jsx";
 import Dashboard  from "./components/Dashboard.jsx";
@@ -7,6 +8,7 @@ import Inventory  from "./components/Inventory.jsx";
 import Alerts     from "./components/Alerts.jsx";
 import Reports    from "./components/Reports.jsx";
 import ItemModal  from "./components/ItemModal.jsx";
+import { initialInventory } from "./data/inventoryData.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
 
@@ -131,7 +133,8 @@ export default function App() {
         setInventory(mapped);
       }
     } catch (e) {
-      console.error("Failed to load inventory:", e);
+      console.warn("Backend API unavailable, displaying initial inventory dataset:", e.message);
+      setInventory(initialInventory);
     } finally {
       setLoading(false);
     }
@@ -140,6 +143,55 @@ export default function App() {
   useEffect(() => {
     loadInventory();
   }, []);
+
+  // Lock background scroll on mobile when sidebar drawer is open
+  useEffect(() => {
+    if (sidebarOpen && typeof window !== "undefined" && window.innerWidth < 768) {
+      document.body.style.overflow = "hidden";
+    } else if (!modalOpen) {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      if (!modalOpen) {
+        document.body.style.overflow = "";
+      }
+    };
+  }, [sidebarOpen, modalOpen]);
+
+  // Lock background scroll when modal dialog is open
+  useEffect(() => {
+    if (modalOpen) {
+      document.body.style.overflow = "hidden";
+    } else if (!sidebarOpen || window.innerWidth >= 768) {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [modalOpen, sidebarOpen]);
+
+  // Close sidebar drawer or modal dialog on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        if (sidebarOpen) setSidebarOpen(false);
+        if (modalOpen) setModalOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [sidebarOpen, modalOpen]);
+
+  // Automatically close sidebar drawer when resizing to desktop viewport
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024 && sidebarOpen) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [sidebarOpen]);
 
   const openAdd  = () => { setEditItem(null); setModalOpen(true); };
   const openEdit = (item) => { setEditItem(item); setModalOpen(true); };
@@ -188,7 +240,8 @@ export default function App() {
   const renderPage = () => {
     if (loading) {
       return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh", color: "var(--gray-500)" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh", color: "var(--gray-500)", gap: 12 }}>
+          <Loader2 size={24} style={{ animation: "spin 1s linear infinite" }} aria-hidden="true" />
           <h3>Loading GIMS database...</h3>
         </div>
       );
@@ -203,7 +256,7 @@ export default function App() {
   };
 
   return (
-    <div className="app-wrapper">
+    <div className={`app-wrapper ${sidebarOpen ? "sidebar-open" : ""}`}>
       {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
       <Sidebar
         activePage={page}
@@ -224,6 +277,7 @@ export default function App() {
           searchQuery={searchQuery}
           onSearch={setSearch}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          sidebarOpen={sidebarOpen}
         />
         {renderPage()}
       </div>

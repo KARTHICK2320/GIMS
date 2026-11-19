@@ -1,13 +1,43 @@
-
 // Central Data Store for Inventory Management
+import React from "react";
+import {
+  ShoppingBasket,
+  Apple,
+  Milk,
+  CupSoda,
+  CakeSlice,
+  Home,
+  CircleCheck,
+  TrendingDown,
+  AlertTriangle,
+} from "lucide-react";
+
+export const departmentIcons = {
+  grocery: ShoppingBasket,
+  "fruits-vegetables": Apple,
+  dairy: Milk,
+  beverages: CupSoda,
+  bakery: CakeSlice,
+  household: Home,
+};
+
+export function DepartmentIcon({ id, size = 16, className = "", style = {} }) {
+  const IconComponent = departmentIcons[id] || ShoppingBasket;
+  return React.createElement(IconComponent, {
+    size,
+    className,
+    style,
+    "aria-hidden": "true",
+  });
+}
 
 export const departments = [
-  { id: "grocery", name: "Grocery", icon: "🛒", color: "#3B82F6" },
-  { id: "fruits-vegetables", name: "Fruits & Vegetables", icon: "🥬", color: "#22C55E" },
-  { id: "dairy", name: "Dairy Products", icon: "🧀", color: "#EAB308" },
-  { id: "beverages", name: "Beverages", icon: "🥤", color: "#EF4444" },
-  { id: "bakery", name: "Bakery", icon: "📦", color: "#F97316" },
-  { id: "household", name: "Household", icon: "🏠", color: "#8B5CF6" },
+  { id: "grocery", name: "Grocery", icon: ShoppingBasket, color: "#3B82F6" },
+  { id: "fruits-vegetables", name: "Fruits & Vegetables", icon: Apple, color: "#22C55E" },
+  { id: "dairy", name: "Dairy Products", icon: Milk, color: "#EAB308" },
+  { id: "beverages", name: "Beverages", icon: CupSoda, color: "#EF4444" },
+  { id: "bakery", name: "Bakery", icon: CakeSlice, color: "#F97316" },
+  { id: "household", name: "Household", icon: Home, color: "#8B5CF6" },
 ];
 
 export const initialInventory = [
@@ -35,7 +65,19 @@ export const initialInventory = [
 ];
 
 export const statusConfig = {
-  "in-stock":  { label: "In Stock",  color: "#22C55E", bg: "#F0FDF4", border: "#BBF7D0" },
-  "low-stock": { label: "Low Stock", color: "#F59E0B", bg: "#FFFBEB", border: "#FDE68A" },
-  "critical":  { label: "Critical",  color: "#EF4444", bg: "#FEF2F2", border: "#FECACA" },
+  "in-stock":  { label: "In Stock",  color: "#22C55E", bg: "#F0FDF4", border: "#BBF7D0", icon: CircleCheck },
+  "low-stock": { label: "Low Stock", color: "#F59E0B", bg: "#FFFBEB", border: "#FDE68A", icon: TrendingDown },
+  "critical":  { label: "Critical",  color: "#EF4444", bg: "#FEF2F2", border: "#FECACA", icon: AlertTriangle },
 };
+
+export function StatusBadge({ status }) {
+  const cfg = statusConfig[status] || statusConfig["in-stock"];
+  return React.createElement(
+    "span",
+    {
+      className: "status-badge",
+      style: { color: cfg.color, background: cfg.bg },
+    },
+    cfg.label
+  );
+}

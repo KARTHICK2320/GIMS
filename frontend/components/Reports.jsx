@@ -1,13 +1,5 @@
 // Reports Page Component displaying inventory valuation metrics and status graphs
-
-const departments = [
-  { id: "grocery", name: "Grocery", icon: "🛒" },
-  { id: "fruits-vegetables", name: "Fruits & Vegetables", icon: "🥬" },
-  { id: "dairy", name: "Dairy Products", icon: "🧀" },
-  { id: "beverages", name: "Beverages", icon: "🥤" },
-  { id: "bakery", name: "Bakery", icon: "📦" },
-  { id: "household", name: "Household", icon: "🏠" },
-];
+import { departments, DepartmentIcon } from "../data/inventoryData.js";
 
 export default function Reports({ inventory }) {
   const totalValue = inventory.reduce((s, i) => s + i.cost, 0);
@@ -17,7 +9,8 @@ export default function Reports({ inventory }) {
   const critical   = inventory.filter((i) => i.status === "critical").length;
 
   const deptItems = departments.map((d) => ({
-    ...d, count: inventory.filter((i) => i.department === d.id).length,
+    ...d,
+    count: inventory.filter((i) => i.department === d.id).length,
   }));
 
   return (
@@ -47,7 +40,10 @@ export default function Reports({ inventory }) {
           <div key={row.label} className="dist-bar-row">
             <div className="dist-bar-label">{row.label}</div>
             <div className="dist-bar-track">
-              <div className={`dist-bar-fill ${row.cls}`} style={{ width: `${(row.count / total) * 100}%` }} />
+              <div
+                className={`dist-bar-fill ${row.cls}`}
+                style={{ width: total > 0 ? `${(row.count / total) * 100}%` : "0%" }}
+              />
             </div>
             <div className="dist-bar-count">{row.count}</div>
           </div>
@@ -59,7 +55,9 @@ export default function Reports({ inventory }) {
         <div className="dept-report-grid">
           {deptItems.map((d) => (
             <div key={d.id} className="dept-report-card">
-              <div className="dept-report-icon">{d.icon}</div>
+              <div className="dept-report-icon">
+                <DepartmentIcon id={d.id} size={20} />
+              </div>
               <div>
                 <div className="dept-report-name">{d.name}</div>
                 <div className="dept-report-count">{d.count} items</div>

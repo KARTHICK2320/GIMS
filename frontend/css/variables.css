@@ -31,7 +31,12 @@
   --gray-900: #0F172A;
 
   --sidebar-width: 220px;
+  --sidebar-drawer-width: min(280px, 82vw);
   --header-height: 64px;
+  --header-height-mobile: 58px;
+  --max-content-width: 1440px;
+  --min-touch-target: 44px;
+
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
@@ -41,6 +46,6 @@
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
   --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
 
-  --transition: 0.2s ease;
-  --font-sans: 'DM Sans', 'Segoe UI', sans-serif;
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
